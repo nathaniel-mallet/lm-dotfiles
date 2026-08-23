@@ -24,3 +24,4 @@ I use Linux Mint mostly for software development, but it also includes a Steam i
 * bat (cat replacement)
 * lazygit
 * lazydocker
+* gh (GitHub CLI)

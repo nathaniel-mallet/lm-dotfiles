@@ -25,7 +25,7 @@ The README defines the scope of what these dotfiles configure. Treat it as the s
 
 **Apps:** VS Code, Steam, Claude, Codex, Slack, 1Password, WezTerm, Docker
 
-**CLI tools:** Neovim, Starship prompt, fd, ripgrep, eza, bat, lazygit, lazydocker
+**CLI tools:** Neovim, Starship prompt, fd, ripgrep, eza, bat, lazygit, lazydocker, gh
 
 The CLI list is deliberately a set of modern replacements — `fd` for find, `rg` for grep, `eza` for ls, `bat` for cat. When writing shell aliases, functions, or scripts in this repo, prefer these over the coreutils originals, since the install scripts guarantee their presence.
 
