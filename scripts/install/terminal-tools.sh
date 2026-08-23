@@ -24,6 +24,7 @@ if check_command fdfind && ! check_command fd; then
 	ln -sf "$(command -v fdfind)" ~/.local/bin/fd
 fi
 
-# Both need more than an apt install, so they live in their own scripts.
+# These need more than an apt install, so they live in their own scripts.
 "$SCRIPT_DIR/eza.sh"
 "$SCRIPT_DIR/lazygit.sh"
+"$SCRIPT_DIR/gh.sh"
