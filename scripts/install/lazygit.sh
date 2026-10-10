@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# lazygit only reached the Ubuntu repos in 24.04, and not Mint's, so it gets
-# pulled from the project's GitHub releases instead.
+# lazygit isn't in the Ubuntu 24.04 repos, so it gets pulled from the project's
+# GitHub releases instead.
 
 source "$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
 

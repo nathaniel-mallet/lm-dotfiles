@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# gh is in Ubuntu 24.04 / Mint 22 universe, but that package is 2.45 and the
+# gh is in Ubuntu 24.04 universe, but that package is 2.45 and the
 # GitHub CLI maintainers say it is broken against current APIs. Use their apt
 # repo instead. See https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 
