@@ -8,16 +8,32 @@ Personal dotfiles and bootstrap scripts for an **Ubuntu-based** development mach
 
 The machine is used for software development plus a Steam install for play-by-email turns — gaming proper happens on a separate Windows box, so don't add gaming-oriented tuning here beyond what Steam needs.
 
-## Current state — read before planning work
+## Layout
 
-The repo contains only `README.md` and `LICENSE`. **No dotfiles and no install scripts have been committed yet**, despite the README describing them. There is no build, lint, or test command; don't go looking for one.
+There is no build, lint, or test command; don't go looking for one. `bash -n <script>` is the cheapest sanity check.
 
-Consequently, most work here is greenfield. Two decisions are still open, and both change the layout of everything else:
+- `install.sh` — the bootstrap entry point. Asks for sudo once, then runs each script in its `STEPS` array, keeps going past failures, and lists them at the end. It warns about any `scripts/install/*.sh` that isn't run, so **a new install script has to be added to `STEPS`** (or run by a script that is already listed).
+- `scripts/install/*.sh` — one script per tool or group of tools. Each one sources `scripts/utils.sh` and must be safe to re-run. Current scripts: `zsh.sh`, `terminal-tools.sh` (which runs `eza.sh`, `lazygit.sh`, and `gh.sh` itself), `neovim.sh`, `rails.sh` (chruby + ruby-install), `ai.sh` (Claude Code CLI), and `desktop_apps.sh` (GUI apps, currently just 1Password and its CLI).
+- `scripts/utils.sh` — shared helpers. Use these rather than calling apt or curl directly:
+  - `apt_install <pkg>` — skips the package if it's already installed, and runs `apt-get update` at most once per shell.
+  - `add_apt_repo <name> <key_url> <sources_line>` — adds a vendor apt repo (keyring in `/etc/apt/keyrings`); install the package from it with `apt_install`.
+  - `deb_install <pkg> <url>` — for apps only published as a standalone `.deb`.
+  - `bash_install <url> [cmd] [args...]` — for vendor `curl | bash` install scripts. Downloads to a file first, runs it with **bash** (not `sh`/dash), and skips the install when `cmd` is already on PATH.
+  - `check_command <cmd>`.
+- `scripts/bin/copy-config.sh` — copies `config/.zshrc` to `~/.zshrc` and every other file in `config/` to `~/.zsh/`. It skips files that are already identical, and backs up anything it replaces to `<file>.backup-<timestamp>`.
+- `config/` — the shell config: `.zshrc`, `aliases.sh`, `functions.sh`.
 
-- **How dotfiles get linked into `$HOME`** — GNU Stow, chezmoi, a hand-rolled `install.sh` with symlinks, Nix, or plain copies. Nothing in the repo commits to one.
-- **How packages get installed** — The distro is Ubuntu-based, so `apt` covers most CLI tools, but several apps in the list below ship via `.deb` downloads, Flatpak, or vendor apt repos rather than the Ubuntu repos.
+## Conventions chosen
 
-Ask before assuming either. Once a convention is chosen, record it here and follow it consistently — a dotfiles repo's value comes from the layout being predictable.
+- **Dotfiles are copied, not symlinked** (no Stow or chezmoi). Edit the copy in the repo, then re-run `copy-config.sh`. A new dotfile (a name starting with `.`) in `config/` needs its own line in `copy-config.sh`, because the glob there skips dotfiles.
+- **Package source preference:** Ubuntu repos via `apt_install` when the packaged version is usable, otherwise the vendor's apt repo (`add_apt_repo`), otherwise GitHub release tarballs or the vendor's install script. When the Ubuntu package is skipped because it's too old or broken (neovim, gh), say why in a comment at the top of the script.
+- Release tarballs and other self-managed binaries go in `/usr/local/bin` or `/opt/<tool>`. Per-user installers (Starship, Claude Code) install into `~/.local/bin`, and `.zshrc` puts it on PATH. Scripts that check for those installs should put `~/.local/bin` on PATH themselves, since `install.sh` runs under bash.
+- Every install step prints `<name> - skipped (already installed)` when there's nothing to do. Keep that format.
+- Scripts use `#!/bin/bash` and tabs for indentation.
+
+Software on the inventory below that has no install script yet: VS Code, Steam, Codex, Slack, WezTerm, Docker. Agent CLIs (Codex next to Claude Code) belong in `ai.sh`, and GUI apps belong in `desktop_apps.sh`.
+
+Some vendor packages (1Password among them) rewrite their own apt source when they're installed. For those, use the vendor's documented keyring path rather than `add_apt_repo`. Otherwise the two sources end up with different `Signed-By` values, and apt refuses to run.
 
 ## Target software inventory
 
