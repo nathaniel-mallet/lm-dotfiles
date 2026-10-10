@@ -12,16 +12,13 @@ set -u
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$REPO_DIR/scripts/install"
 
-# Order matters where one step relies on another:
-#   - zsh first, since the config copied at the end is zsh-only
-#   - terminal-tools before the rest, as it also links bat/fd into ~/.local/bin
+# zsh goes first, since the config copied at the end is zsh-only.
+# terminal-tools.sh runs eza.sh, lazygit.sh and gh.sh itself, so they can be
+# installed together without the rest - they aren't listed separately here.
 # New scripts in scripts/install need adding here too.
 STEPS=(
 	"$INSTALL_DIR/zsh.sh"
 	"$INSTALL_DIR/terminal-tools.sh"
-	"$INSTALL_DIR/eza.sh"
-	"$INSTALL_DIR/lazygit.sh"
-	"$INSTALL_DIR/gh.sh"
 	"$INSTALL_DIR/neovim.sh"
 	"$INSTALL_DIR/rails.sh"
 	"$REPO_DIR/scripts/bin/copy-config.sh"
@@ -40,8 +37,10 @@ for step in "${STEPS[@]}"; do
 done
 
 # Catch scripts that were added to scripts/install but not to STEPS above.
+# Ones a step runs itself (like terminal-tools.sh -> eza.sh) don't count.
 for script in "$INSTALL_DIR"/*.sh; do
-	if [[ ! " ${STEPS[*]} " == *" $script "* ]]; then
+	if [[ ! " ${STEPS[*]} " == *" $script "* ]] && \
+		! \grep -qF "/$(basename "$script")" "${STEPS[@]}"; then
 		echo "Warning: ${script#"$REPO_DIR"/} isn't listed in install.sh and was not run" >&2
 	fi
 done

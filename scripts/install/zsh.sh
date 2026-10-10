@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Installs zsh and makes it the login shell - Pop!_OS defaults to bash, and the
-# config in this repo is zsh-only.
+# Installs zsh and makes it the login shell - Ubuntu-based distros default to
+# bash, and the config in this repo is zsh-only.
 
 source "$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
 
