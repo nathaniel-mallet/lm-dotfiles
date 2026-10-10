@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source "$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+source "$SCRIPT_DIR/../utils.sh"
 
 bash_install https://starship.rs/install.sh starship
 apt_install fd-find
@@ -22,3 +23,11 @@ if check_command fdfind && ! check_command fd; then
 	mkdir -p ~/.local/bin
 	ln -sf "$(command -v fdfind)" ~/.local/bin/fd
 fi
+
+# These need more than an apt install, so they live in their own scripts.
+# Keep going if one fails, but exit non-zero so install.sh reports it.
+status=0
+"$SCRIPT_DIR/eza.sh" || status=1
+"$SCRIPT_DIR/lazygit.sh" || status=1
+"$SCRIPT_DIR/gh.sh" || status=1
+exit $status

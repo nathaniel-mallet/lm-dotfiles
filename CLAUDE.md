@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Personal dotfiles and bootstrap scripts for a **Pop!_OS 24.04** development machine (Ubuntu Noble base, COSMIC desktop). The goal stated in the README is reproducibility: after a fresh install on another PC, running the scripts here should bring the machine back to a working state.
+Personal dotfiles and bootstrap scripts for an **Ubuntu-based** development machine (currently an Ubuntu 24.04 Noble base). The goal stated in the README is reproducibility: after a fresh install on another PC, running the scripts here should bring the machine back to a working state.
 
 The machine is used for software development plus a Steam install for play-by-email turns — gaming proper happens on a separate Windows box, so don't add gaming-oriented tuning here beyond what Steam needs.
 
@@ -15,7 +15,7 @@ The repo contains only `README.md` and `LICENSE`. **No dotfiles and no install s
 Consequently, most work here is greenfield. Two decisions are still open, and both change the layout of everything else:
 
 - **How dotfiles get linked into `$HOME`** — GNU Stow, chezmoi, a hand-rolled `install.sh` with symlinks, Nix, or plain copies. Nothing in the repo commits to one.
-- **How packages get installed** — Pop!_OS is Ubuntu-based, so `apt` covers most CLI tools, but several apps in the list below ship via `.deb` downloads, Flatpak, or vendor apt repos rather than the Ubuntu repos.
+- **How packages get installed** — The distro is Ubuntu-based, so `apt` covers most CLI tools, but several apps in the list below ship via `.deb` downloads, Flatpak, or vendor apt repos rather than the Ubuntu repos.
 
 Ask before assuming either. Once a convention is chosen, record it here and follow it consistently — a dotfiles repo's value comes from the layout being predictable.
 

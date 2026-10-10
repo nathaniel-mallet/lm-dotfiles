@@ -1,8 +1,8 @@
 # lm-dotfiles
 
-This folder contains the dotfiles for my Pop!_OS setup. It also contains a few install scripts so that if/when I do a fresh install on another PC, I can quickly get everything up and running.
+This folder contains the dotfiles for my Ubuntu-based Linux setup. It also contains a few install scripts so that if/when I do a fresh install on another PC, I can quickly get everything up and running.
 
-I use Pop!_OS mostly for software development, but it also includes a Steam install so I can play my PBEM turns while I'm working (I have a separate PC running Windows for gaming).
+I use it mostly for software development, but it also includes a Steam install so I can play my PBEM turns while I'm working (I have a separate PC running Windows for gaming).
 
 ## Installed software
 ### Apps
