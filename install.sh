@@ -21,6 +21,8 @@ STEPS=(
 	"$INSTALL_DIR/terminal-tools.sh"
 	"$INSTALL_DIR/neovim.sh"
 	"$INSTALL_DIR/rails.sh"
+	"$INSTALL_DIR/ai.sh"
+	"$INSTALL_DIR/desktop_apps.sh"
 	"$REPO_DIR/scripts/bin/copy-config.sh"
 )
 

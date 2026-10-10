@@ -96,7 +96,9 @@ deb_install() {
 }
 
 # For tools that publish their own install script rather than a package
-# (starship, ...), i.e. the `curl -sS <url> | sh` pattern:
+# (starship, Claude Code, ...), i.e. the `curl -sS <url> | bash` pattern.
+# Run with bash rather than sh - on Ubuntu sh is dash, and some of these
+# installers (Claude Code's, lazydocker's) use bash-only syntax:
 #   bash_install https://starship.rs/install.sh
 #   $1 - URL of the install script
 #   $2 - optional: command the script provides. If given, the install is
@@ -118,7 +120,7 @@ bash_install() {
 	# a connection that drops midway can't leave a half-run script behind.
 	# -f matters too: without it a 404 page would get executed as a script.
 	if curl -fsSL "$url" -o "$tmp/install.sh"; then
-		sh "$tmp/install.sh" "$@"
+		bash "$tmp/install.sh" "$@"
 	else
 		echo "Failed to download install script from $url" >&2
 	fi
