@@ -96,10 +96,10 @@ deb_install() {
 }
 
 # For tools that publish their own install script rather than a package
-# (starship, Claude Code, ...), i.e. the `curl -sS <url> | bash` pattern.
+# (Claude Code, lazydocker, ...), i.e. the `curl -sS <url> | bash` pattern.
 # Run with bash rather than sh - on Ubuntu sh is dash, and some of these
 # installers (Claude Code's, lazydocker's) use bash-only syntax:
-#   bash_install https://starship.rs/install.sh
+#   bash_install https://claude.ai/install.sh claude
 #   $1 - URL of the install script
 #   $2 - optional: command the script provides. If given, the install is
 #        skipped when that command is already on PATH.
@@ -119,8 +119,10 @@ bash_install() {
 	# Downloaded to a file first rather than piped straight into the shell, so
 	# a connection that drops midway can't leave a half-run script behind.
 	# -f matters too: without it a 404 page would get executed as a script.
+	# Run from the temp dir too, since some installers (ghostty-ubuntu's)
+	# download files into the current directory.
 	if curl -fsSL "$url" -o "$tmp/install.sh"; then
-		bash "$tmp/install.sh" "$@"
+		(cd "$tmp" && bash install.sh "$@")
 	else
 		echo "Failed to download install script from $url" >&2
 	fi

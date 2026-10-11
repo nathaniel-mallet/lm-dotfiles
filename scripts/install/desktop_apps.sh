@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# GUI desktop apps. Each one comes from its vendor's apt repo (or .deb) rather
-# than the Ubuntu repos, so they get updates through normal apt upgrades.
+# GUI desktop apps. Each one comes from apt (the Ubuntu repos, or the vendor's
+# apt repo when Ubuntu doesn't package it), so they get updates through normal
+# apt upgrades. Ghostty and Chromium are the exceptions - see below.
 
 source "$(dirname "${BASH_SOURCE[0]}")/../utils.sh"
 
@@ -42,6 +43,32 @@ else
 	fi
 	apt_install 1password || status=1
 	apt_install 1password-cli || status=1
+fi
+
+# Ghostty - https://ghostty.org/docs/install/binary
+# Not in the Ubuntu repos before 26.04, and the project publishes no apt repo
+# or .deb of its own. Its docs point Ubuntu 24.04 users at the community
+# ghostty-ubuntu .debs, installed via that project's script (which knows Pop!_OS
+# by name and maps it to the matching Ubuntu build). The .deb doesn't come from
+# a repo, so apt won't upgrade it - to update, run the script again by hand.
+bash_install https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh ghostty || status=1
+
+# KeePassXC - the Ubuntu package is recent enough.
+apt_install keepassxc || status=1
+
+# Chromium - from Flathub rather than apt. Ubuntu's chromium-browser package is
+# just a transitional wrapper that installs the snap, and snapd isn't installed
+# on this machine (Pop!_OS doesn't ship it). Google publishes no Chromium apt
+# repo. Installed per user, which is where Pop!_OS already has flathub set up.
+CHROMIUM_ID=org.chromium.Chromium
+
+check_command flatpak || apt_install flatpak
+if flatpak info --user "$CHROMIUM_ID" &> /dev/null; then
+	echo "chromium - skipped (already installed)"
+else
+	echo "installing chromium ..."
+	flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo &&
+		flatpak install --user -y --noninteractive flathub "$CHROMIUM_ID" || status=1
 fi
 
 exit $status
