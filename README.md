@@ -12,12 +12,15 @@ I use it mostly for software development, but it also includes a Steam install s
 * Codex
 * Slack
 * 1 Password
-* WezTerm
+* Ghostty
+* Chromium
+* KeePassXC
 * Docker
 
 ### Command line tools
 * Neovim
 * Starship Prompt
+* Oh My Zsh
 * fd (find replacement)
 * ripgrep (grep replacement)
 * eza (ls replacement)

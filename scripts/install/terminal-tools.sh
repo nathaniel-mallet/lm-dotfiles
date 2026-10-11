@@ -3,7 +3,26 @@
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 source "$SCRIPT_DIR/../utils.sh"
 
-bash_install https://starship.rs/install.sh starship
+# Starship and the bat/fd links below live in ~/.local/bin, which isn't on
+# PATH under install.sh's bash - without this the skip checks never match.
+export PATH="$HOME/.local/bin:$PATH"
+
+# Not bash_install: Starship's installer refuses to run under bash and wants sh.
+# --yes: it otherwise stops at a y/N prompt. --bin-dir: its default is
+# /usr/local/bin, but per-user installers go in ~/.local/bin here.
+if check_command starship; then
+	echo "starship - skipped (already installed)"
+else
+	echo "Installing starship ..."
+	mkdir -p ~/.local/bin
+	tmp="$(mktemp -d)"
+	if curl -fsSL https://starship.rs/install.sh -o "$tmp/install.sh"; then
+		sh "$tmp/install.sh" --yes --bin-dir "$HOME/.local/bin"
+	else
+		echo "Failed to download the starship install script" >&2
+	fi
+	rm -rf "$tmp"
+fi
 apt_install fd-find
 apt_install ripgrep
 apt_install fzf

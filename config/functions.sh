@@ -1,4 +1,4 @@
 #!/bin/zsh
 
-ggpull() { git pull origin $(git branch --show-current) }
-ggpush() { git push origin $(git branch --show-current) }
+# ggpull/ggpush used to be defined here, but oh-my-zsh's git plugin provides
+# both as aliases now (and an alias name can't also be defined with name() {}).

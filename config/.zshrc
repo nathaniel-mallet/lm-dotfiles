@@ -1,3 +1,10 @@
+# Oh My Zsh - loaded first so the settings below override its defaults.
+# No theme, since Starship draws the prompt.
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""
+plugins=(git)
+[ -s "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
