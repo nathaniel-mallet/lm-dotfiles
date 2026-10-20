@@ -10,6 +10,7 @@ I use it mostly for software development, but it also includes a Steam install s
 * Steam
 * Claude
 * Codex
+* Orca (agent development environment)
 * Slack
 * 1 Password
 * Ghostty
@@ -28,3 +29,4 @@ I use it mostly for software development, but it also includes a Steam install s
 * lazygit
 * lazydocker
 * gh (GitHub CLI)
+* opencode

@@ -35,3 +35,6 @@ source /usr/local/share/chruby/chruby.sh
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin
 
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
+
