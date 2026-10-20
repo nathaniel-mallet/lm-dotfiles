@@ -13,7 +13,7 @@ The machine is used for software development plus a Steam install for play-by-em
 There is no build, lint, or test command; don't go looking for one. `bash -n <script>` is the cheapest sanity check.
 
 - `install.sh` — the bootstrap entry point. Asks for sudo once, then runs each script in its `STEPS` array, keeps going past failures, and lists them at the end. It warns about any `scripts/install/*.sh` that isn't run, so **a new install script has to be added to `STEPS`** (or run by a script that is already listed).
-- `scripts/install/*.sh` — one script per tool or group of tools. Each one sources `scripts/utils.sh` and must be safe to re-run. Current scripts: `zsh.sh` (zsh, oh-my-zsh, login shell), `terminal-tools.sh` (which runs `eza.sh`, `lazygit.sh`, and `gh.sh` itself), `neovim.sh`, `rails.sh` (chruby + ruby-install), `ai.sh` (Claude Code CLI), and `desktop_apps.sh` (GUI apps: 1Password and its CLI, Ghostty, KeePassXC, and Chromium from Flathub).
+- `scripts/install/*.sh` — one script per tool or group of tools. Each one sources `scripts/utils.sh` and must be safe to re-run. Current scripts: `zsh.sh` (zsh, oh-my-zsh, login shell), `terminal-tools.sh` (which runs `eza.sh`, `lazygit.sh`, and `gh.sh` itself), `neovim.sh`, `rails.sh` (chruby + ruby-install), `ai.sh` (Claude Code CLI, opencode, and the Orca desktop app), and `desktop_apps.sh` (GUI apps: 1Password and its CLI, Ghostty, KeePassXC, and Chromium from Flathub).
 - `scripts/utils.sh` — shared helpers. Use these rather than calling apt or curl directly:
   - `apt_install <pkg>` — skips the package if it's already installed, and runs `apt-get update` at most once per shell.
   - `add_apt_repo <name> <key_url> <sources_line>` — adds a vendor apt repo (keyring in `/etc/apt/keyrings`); install the package from it with `apt_install`.
@@ -31,7 +31,7 @@ There is no build, lint, or test command; don't go looking for one. `bash -n <sc
 - Every install step prints `<name> - skipped (already installed)` when there's nothing to do. Keep that format.
 - Scripts use `#!/bin/bash` and tabs for indentation.
 
-Software on the inventory below that has no install script yet: VS Code, Steam, Codex, Slack, Docker. Agent CLIs (Codex next to Claude Code) belong in `ai.sh`, and GUI apps belong in `desktop_apps.sh`.
+Software on the inventory below that has no install script yet: VS Code, Steam, Codex, Slack, Docker. Agent CLIs (Codex next to Claude Code and opencode) and agent tooling such as Orca belong in `ai.sh`, and GUI apps belong in `desktop_apps.sh`.
 
 Some vendor packages (1Password among them) rewrite their own apt source when they're installed. For those, use the vendor's documented keyring path rather than `add_apt_repo`. Otherwise the two sources end up with different `Signed-By` values, and apt refuses to run.
 
@@ -39,9 +39,9 @@ Some vendor packages (1Password among them) rewrite their own apt source when th
 
 The README defines the scope of what these dotfiles configure. Treat it as the source of truth for "does this belong here?" — config for something not on the list probably needs a README update alongside it.
 
-**Apps:** VS Code, Steam, Claude, Codex, Slack, 1Password, Ghostty, Chromium, KeePassXC, Docker
+**Apps:** VS Code, Steam, Claude, Codex, Orca, Slack, 1Password, Ghostty, Chromium, KeePassXC, Docker
 
-**CLI tools:** Neovim, Starship prompt, oh-my-zsh, fd, ripgrep, eza, bat, lazygit, lazydocker, gh
+**CLI tools:** Neovim, Starship prompt, oh-my-zsh, fd, ripgrep, eza, bat, lazygit, lazydocker, gh, opencode
 
 The CLI list is deliberately a set of modern replacements — `fd` for find, `rg` for grep, `eza` for ls, `bat` for cat. When writing shell aliases, functions, or scripts in this repo, prefer these over the coreutils originals, since the install scripts guarantee their presence.
 
