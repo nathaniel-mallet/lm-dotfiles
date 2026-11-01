@@ -3,6 +3,7 @@
 # Copies the shell config out of the repo and into $HOME:
 #   config/.zshrc  ->  ~/.zshrc
 #   config/*       ->  ~/.zsh/<file>
+#   config/ghostty/config.ghostty  ->  ~/.config/ghostty/config.ghostty
 #
 # Anything already in place is moved aside to <file>.backup-<timestamp> first,
 # so this is safe to run on a machine that's already set up.
@@ -50,5 +51,10 @@ for src in "$CONFIG_DIR"/*; do
 	[ -f "$src" ] || continue
 	copy_config "$src" "$ZSH_DIR/$(basename "$src")"
 done
+
+# Subdirectories of config/ (skipped by the glob above) hold config for other
+# apps, each copied to wherever that app looks for it.
+mkdir -p "$HOME/.config/ghostty"
+copy_config "$CONFIG_DIR/ghostty/config.ghostty" "$HOME/.config/ghostty/config.ghostty"
 
 echo "Done - open a new shell or run 'source ~/.zshrc' to pick up the changes."

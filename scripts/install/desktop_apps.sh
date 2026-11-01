@@ -53,6 +53,21 @@ fi
 # a repo, so apt won't upgrade it - to update, run the script again by hand.
 bash_install https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh ghostty || status=1
 
+# Make Ghostty the default terminal. The .deb already registers it as the
+# x-terminal-emulator alternative, but Cinnamon (and Ctrl+Alt+T) launch whatever
+# its own default-applications setting names, which starts out as gnome-terminal.
+TERMINAL_SCHEMA=org.cinnamon.desktop.default-applications.terminal
+
+if ! gsettings list-keys "$TERMINAL_SCHEMA" &> /dev/null; then
+	echo "default terminal - skipped (not a Cinnamon desktop)"
+elif [ "$(gsettings get "$TERMINAL_SCHEMA" exec)" = "'ghostty'" ]; then
+	echo "default terminal - skipped (already ghostty)"
+else
+	echo "Setting ghostty as the default terminal ..."
+	gsettings set "$TERMINAL_SCHEMA" exec ghostty
+	gsettings set "$TERMINAL_SCHEMA" exec-arg -e
+fi
+
 # KeePassXC - the Ubuntu package is recent enough.
 apt_install keepassxc || status=1
 

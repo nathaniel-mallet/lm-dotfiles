@@ -20,7 +20,7 @@ There is no build, lint, or test command; don't go looking for one. `bash -n <sc
   - `deb_install <pkg> <url>` — for apps only published as a standalone `.deb`.
   - `bash_install <url> [cmd] [args...]` — for vendor `curl | bash` install scripts. Downloads to a file first, runs it with **bash** (not `sh`/dash), and skips the install when `cmd` is already on PATH.
   - `check_command <cmd>`.
-- `scripts/bin/copy-config.sh` — copies `config/.zshrc` to `~/.zshrc` and every other file in `config/` to `~/.zsh/`. It skips files that are already identical, and backs up anything it replaces to `<file>.backup-<timestamp>`.
+- `scripts/bin/copy-config.sh` — copies `config/.zshrc` to `~/.zshrc`, every other file in `config/` to `~/.zsh/`, and `config/ghostty/config.ghostty` to `~/.config/ghostty/`. It skips files that are already identical, and backs up anything it replaces to `<file>.backup-<timestamp>`.
 - `config/` — the shell config: `.zshrc`, `aliases.sh`, `functions.sh`.
 
 ## Conventions chosen
